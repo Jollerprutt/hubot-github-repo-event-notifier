@@ -101,7 +101,7 @@ module.exports = (robot) ->
       else
         robot.logger.warning "Ignoring #{eventType}:#{data.action} as it's not allowed."
     catch error
-      robot.messageRoom room, "Whoa, I got an error: #{error}"
+      # robot.messageRoom room, "Whoa, I got an error: #{error}"
       robot.logger.error "Github repo event notifier error: #{error}. Request: #{req.body}"
 
     res.end ""
