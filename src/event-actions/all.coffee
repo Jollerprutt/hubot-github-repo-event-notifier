@@ -247,7 +247,6 @@ module.exports =
 
   ping: (adapter, data, callback) ->
     hook_id = data.hook_id
-
     sender = data.sender
 
     callback "ping by #{sender.login}. hook_id: #{hook_id}"
