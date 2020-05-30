@@ -24,6 +24,8 @@ extractMentionsFromBody = (body) ->
 
 formatUrl = (adapter, url, text) ->
   switch adapter
+    when "gitter2"
+      "[#{text}](#{url})"
     when "mattermost" || "slack"
       "<#{url}|#{text}>"
     else
@@ -248,8 +250,9 @@ module.exports =
   ping: (adapter, data, callback) ->
     hook_id = data.hook_id
     sender = data.sender
+    repo_link = formatUrl adapter, sender.html_url, sender.login
 
-    callback "ping by #{sender.login}. hook_id: #{hook_id}"
+    callback "ping by #{repo_link}. hook_id: #{hook_id}"
 
   watch: (adapter, data, callback) ->
     repo = data.repository
