@@ -95,7 +95,7 @@ module.exports = (robot) ->
           return false # no match, fail
 
       if filter_parts.length > 0
-        announceRepoEvent robot adapter, data, eventType, (what) ->
+        announceRepoEvent (robot adapter, data, eventType, (what)) ->
           # robot.messageRoom room, what
           robot.logger.info ("Received #{eventType} event, containing: #{what}")
       else
@@ -106,8 +106,8 @@ module.exports = (robot) ->
 
     res.end ""
 
-announceRepoEvent = (robot, adapter, data, eventType, cb) ->
+announceRepoEvent = (@robot, adapter, data, eventType, cb) ->
   if eventActions[eventType]?
     eventActions[eventType](adapter, data, cb)
   else
-    robot.logger.info ("Received a new #{eventType} event, just so you know.")
+    @robot.logger.info ("Received a new #{eventType} event, just so you know.")
