@@ -245,6 +245,13 @@ module.exports =
 
     callback ""
 
+  ping: (adapter, data, callback) ->
+    hook_id = data.hook_id
+
+    sender = data.sender
+
+    callback "ping by #{sender.login}. hook_id: #{hook_id}"
+
   watch: (adapter, data, callback) ->
     repo = data.repository
     sender = data.sender
