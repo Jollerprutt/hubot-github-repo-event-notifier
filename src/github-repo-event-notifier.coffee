@@ -95,13 +95,14 @@ module.exports = (robot) ->
           return false # no match, fail
 
       if filter_parts.length > 0
-        announceRepoEvent (robot adapter, data, eventType, (what)) ->
+        announceRepoEvent (robot, adapter, data, eventType, (what)) ->
           # robot.messageRoom room, what
           robot.logger.info ("Received #{eventType} event, containing: #{what}")
       else
         robot.logger.warning "Ignoring #{eventType}:#{data.action} as it's not allowed."
     catch error
       # robot.messageRoom room, "Whoa, I got an error: #{error}"
+      robot.logger.info ("Received #{eventType} event, containing: #{what}")
       robot.logger.error "Github repo event notifier error: #{error}. Request: #{req.body}"
 
     res.end ""
