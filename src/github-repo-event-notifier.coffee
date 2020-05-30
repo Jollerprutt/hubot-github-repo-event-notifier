@@ -95,7 +95,7 @@ module.exports = (robot) ->
           return false # no match, fail
 
       if filter_parts.length > 0
-        announceRepoEvent (robot, adapter, data, eventType, (what)) ->
+        announceRepoEvent robot, adapter, data, eventType, (what) ->
           # robot.messageRoom room, what
           robot.logger.info ("Received #{eventType} event, containing: #{what}")
       else
