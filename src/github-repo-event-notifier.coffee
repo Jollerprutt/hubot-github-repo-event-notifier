@@ -97,9 +97,11 @@ module.exports = (robot) ->
         announceRepoEvent robot, adapter, data, eventType, (what) ->
           robot.emit "git_event", {
             thing : 'thingy',
-            type  : eventType,
+            type  : "#{eventType}",
             what1 : what
           }
+
+          robot.emit "git_event2", eventType, what
 
           robot.logger.info ("Received #{eventType} event, containing: #{what}")
       else
