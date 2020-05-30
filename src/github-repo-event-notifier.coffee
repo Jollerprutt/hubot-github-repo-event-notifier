@@ -66,7 +66,6 @@ module.exports = (robot) ->
 
     data = req.body
     robot.logger.debug "github-repo-event-notifier: Received POST to /hubot/gh-repo-events with data = #{inspect data}"
-    # room = query.room || process.env["HUBOT_GITHUB_EVENT_NOTIFIER_ROOM"]
     eventType = req.headers["x-github-event"]
     robot.logger.debug "github-repo-event-notifier: Processing event type: \"#{eventType}\"..."
     adapter = robot.adapterName
@@ -96,7 +95,12 @@ module.exports = (robot) ->
 
       if filter_parts.length > 0
         announceRepoEvent robot, adapter, data, eventType, (what) ->
-          # robot.messageRoom room, what
+          robot.emit "git_event", {
+            thing : 'thingy',
+            type  : eventType,
+            what1 : what
+          }
+
           robot.logger.info ("Received #{eventType} event, containing: #{what}")
       else
         robot.logger.warning "Ignoring #{eventType}:#{data.action} as it's not allowed."
