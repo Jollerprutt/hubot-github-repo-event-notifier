@@ -189,8 +189,8 @@ module.exports =
       when "unassigned"
         msg += " unassigned #{data.assignee.login} by #{pull_by} "
       when "review_requested"
-      msg += " review requested from "
-      reviewers = data.requested_reviewers
+        msg += " review requested from "
+        reviewers = data.requested_reviewers
         if reviewers.length == 1
           msg += "@#{data.requested_reviewer.login} "
         else if reviewers.length > 1
