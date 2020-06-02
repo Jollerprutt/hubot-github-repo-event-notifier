@@ -25,7 +25,7 @@ extractMentionsFromBody = (body) ->
 formatUrl = (adapter, url, text) ->
   switch adapter
     when "gitter2"
-      "[#{text}](#{url})"
+      "#{text}](#{url})"
     when "mattermost" || "slack"
       "<#{url}|#{text}>"
     else
@@ -38,7 +38,7 @@ module.exports =
     repo_link = formatUrl adapter, repo.html_url, repo.name
     commit_link = formatUrl adapter, comment.html_url, comment.commit_id
 
-    callback "[#{repo_link}] New comment by #{comment.user.login} on commit #{commit_link}: \n\"#{comment.body}\""
+    callback "#{repo_link} - New comment by #{comment.user.login} on commit #{commit_link}: \n\"#{comment.body}\""
 
   create: (adapter, data, callback) ->
     repo = data.repository
@@ -46,7 +46,7 @@ module.exports =
     ref_type = data.ref_type
     ref = data.ref
 
-    callback "[#{repo_link}] New #{ref_type} #{ref} created"
+    callback "#{repo_link} - New #{ref_type} #{ref} created"
 
   delete: (adapter, data, callback) ->
     repo = data.repository
@@ -55,7 +55,7 @@ module.exports =
 
     ref = data.ref.split('refs/heads/').join('')
 
-    callback "[#{repo_link}] #{ref_type} #{ref} deleted"
+    callback "#{repo_link} - #{ref_type} #{ref} deleted"
 
   deployment: (adapter, data, callback) ->
     deploy = data.deployment
@@ -86,7 +86,7 @@ module.exports =
 
     page = pages[0]
 
-    callback "[#{repo_link}] Wiki page #{page.page_name} (#{page.html_url}) #{page.action} by #{sender.login}"
+    callback "#{repo_link} - Wiki page #{page.page_name} (#{page.html_url}) #{page.action} by #{sender.login}"
 
   issues: (adapter, data, callback) ->
     issue = data.issue
@@ -96,7 +96,7 @@ module.exports =
     action = data.action
     sender = data.sender
 
-    msg = "[#{repo_link}] Issue #{issue_link}"
+    msg = "#{repo_link} - Issue #{issue_link}"
 
     switch action
       when "assigned"
@@ -131,7 +131,7 @@ module.exports =
     if comment.html_url.indexOf("/pull/") > -1
       issue_pull = "Pull Request"
 
-    callback "[#{repo_link}] New comment on #{comment_link} by #{comment.user.login}: \n\"#{comment.body}\""
+    callback "#{repo_link} - New comment on #{comment_link} by #{comment.user.login}: \n\"#{comment.body}\""
 
   member: (adapter, data, callback) ->
     member = data.member
@@ -165,7 +165,7 @@ module.exports =
     repo_link = formatUrl adapter, repo.html_url, repo.name
     comment_link = formatUrl adapter, comment.html_url, pull_req.title
 
-    callback "[#{repo_link}] New comment on Pull Request #{comment_link} by #{comment.user.login}: \n\"#{comment.body}\""
+    callback "#{repo_link} - New comment on Pull Request #{comment_link} by #{comment.user.login}: \n\"#{comment.body}\""
 
   pull_request: (adapter, data, callback) ->
     pull_num = data.number
@@ -178,7 +178,7 @@ module.exports =
 
     action = data.action
 
-    msg = "[#{repo_link}] Pull Request #{pull_request_link}"
+    msg = "#{repo_link} - Pull Request #{pull_request_link}"
 
     switch action
       when "assigned"
@@ -214,9 +214,9 @@ module.exports =
     if !data.deleted
       if commits.length == 1
         commit_link = formatUrl adapter, head_commit.url, "\"#{head_commit.message}\""
-        callback "[#{repo_link}] New commit #{commit_link} by #{pusher.name}"
+        callback "#{repo_link} - New commit #{commit_link} by #{pusher.name}"
       else if commits.length > 1
-        message = "[#{repo_link}] #{pusher.name} pushed #{commits.length} commits:"
+        message = "#{repo_link} - #{pusher.name} pushed #{commits.length} commits:"
         for commit in commits
           commit_link = formatUrl adapter, commit.url, "\"#{commit.message}\""
           message += "\n#{commit_link}"
@@ -227,8 +227,9 @@ module.exports =
     repo = data.repository
     org = data.organization
     action = data.action
+    repo_link = formatUrl adapter, repo.html_url, repo.full_name
 
-    callback "#{repo.full_name} #{action}"
+    callback "#{repo_link} #{action}"
 
   release: (adapter, data, callback) ->
     release = data.release
@@ -236,7 +237,7 @@ module.exports =
     repo_link = formatUrl adapter, repo.html_url, repo.name
     action = data.action
 
-    callback "[#{repo_link}] Release #{release.tag_name} #{action}"
+    callback "#{repo_link} - Release #{release.tag_name} #{action}"
 
   # No clue what to do with this one.
   status: (adapter, data, callback) ->
