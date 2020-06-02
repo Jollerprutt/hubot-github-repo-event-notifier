@@ -29,7 +29,7 @@ formatUrl = (adapter, url, text) ->
     when "mattermost" || "slack"
       "<#{url}|#{text}>"
     else
-      "#{text} (#{url})"
+      "#{text} (#{url}) adapter: #{adapter}"
 
 module.exports =
   commit_comment: (adapter, data, callback) ->
