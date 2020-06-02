@@ -25,7 +25,7 @@ extractMentionsFromBody = (body) ->
 formatUrl = (adapter, url, text) ->
   switch adapter
     when "gitter2"
-      "#{text}](#{url})"
+      "[#{text}](#{url})"
     when "mattermost" || "slack"
       "<#{url}|#{text}>"
     else
