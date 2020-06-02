@@ -95,27 +95,29 @@ module.exports =
     issue_link = formatUrl adapter, issue.html_url, "##{issue.number} \"#{issue.title}\""
     action = data.action
     sender = data.sender
+    issue_by = formatUrl adapter, sender.html_url, sender.login
+    issue_for = formatUrl adapter, sender.html_url, issue.assignee.login
 
     msg = "#{repo_link} - Issue #{issue_link}"
 
     switch action
       when "assigned"
         if issue.assignee.login is sender.login
-          msg += " self-assigned by #{issue.assignee.login} "
+          msg += " self-assigned by #{issue_for} "
         else
-          msg += " assigned to: #{issue.assignee.login} by #{sender.login} "
+          msg += " assigned to: #{issue_for} by #{issue_by} "
       when "unassigned"
-        msg += " unassigned #{data.assignee.login} by #{sender.login} "
+        msg += " unassigned #{data.assignee.login} by #{issue_by} "
       when "opened"
-        msg += " opened by #{sender.login} "
+        msg += " opened by #{issue_by} "
       when "closed"
-        msg += " closed by #{sender.login} "
+        msg += " closed by #{issue_by} "
       when "reopened"
-        msg += " reopened by #{sender.login} "
+        msg += " reopened by #{issue_by} "
       when "labeled"
-        msg += " #{sender.login} added label: \"#{data.label.name}\" "
+        msg += " #{issue_by} added label: \"#{data.label.name}\" "
       when "unlabeled"
-        msg += " #{sender.login} removed label: \"#{data.label.name}\" "
+        msg += " #{issue_by} removed label: \"#{data.label.name}\" "
 
     callback msg
 
@@ -172,9 +174,10 @@ module.exports =
     pull_req = data.pull_request
     base = data.base
     repo = data.repository
+    sender = data.sender
     repo_link = formatUrl adapter, repo.html_url, repo.name
     pull_request_link = formatUrl adapter, pull_req.html_url, "##{data.number} \"#{pull_req.title}\""
-    sender = data.sender
+    pull_by = formatUrl adapter, sender.html_url, sender.login
 
     action = data.action
 
@@ -182,24 +185,24 @@ module.exports =
 
     switch action
       when "assigned"
-        msg += " assigned to: #{data.assignee.login} by #{sender.login} "
+        msg += " assigned to: #{data.assignee.login} by #{pull_by} "
       when "unassigned"
-        msg += " unassigned #{data.assignee.login} by #{sender.login} "
+        msg += " unassigned #{data.assignee.login} by #{pull_by} "
       when "opened"
-        msg += " opened by #{sender.login} "
+        msg += " opened by #{pull_by} "
       when "closed"
         if pull_req.merged
-          msg += " merged by #{sender.login} "
+          msg += " merged by #{pull_by} "
         else
-          msg += " closed by #{sender.login} "
+          msg += " closed by #{pull_by} "
       when "reopened"
-        msg += " reopened by #{sender.login} "
+        msg += " reopened by #{pull_by} "
       when "labeled"
-        msg += " #{sender.login} added label: \"#{data.label.name}\" "
+        msg += " #{pull_by} added label: \"#{data.label.name}\" "
       when "unlabeled"
-        msg += " #{sender.login} removed label: \"#{data.label.name}\" "
+        msg += " #{pull_by} removed label: \"#{data.label.name}\" "
       when "synchronize"
-        msg +=" synchronized by #{sender.login} "
+        msg +=" synchronized by #{pull_by} "
 
     callback msg
 
@@ -251,9 +254,9 @@ module.exports =
   ping: (adapter, data, callback) ->
     hook_id = data.hook_id
     sender = data.sender
-    repo_link = formatUrl adapter, sender.html_url, sender.login
+    ping_by = formatUrl adapter, sender.html_url, sender.login
 
-    callback "ping by #{repo_link}. hook_id: #{hook_id}"
+    callback "ping by #{ping_by}. hook_id: #{hook_id}"
 
   watch: (adapter, data, callback) ->
     repo = data.repository
