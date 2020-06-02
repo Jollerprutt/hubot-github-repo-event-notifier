@@ -225,13 +225,14 @@ module.exports =
 
     if !data.deleted
       if commits.length == 1
-        commit_link = formatUrl adapter, head_commit.url, "\"#{head_commit.message}\""
-        callback "#{repo_link} - New commit #{commit_link} by #{pusher.name}"
+        commit_link = formatUrl adapter, head_commit.url, "commit"
+        callback "#{repo_link} - New commit by #{pusher.name}\n#{commit_link}: #{head_commit.message}"
       else if commits.length > 1
+        num = 1
         message = "#{repo_link} - #{pusher.name} pushed #{commits.length} commits:"
         for commit in commits
-          commit_link = formatUrl adapter, commit.url, "\"#{commit.message}\""
-          message += "\n#{commit_link}"
+          commit_link = formatUrl adapter, commit.url, "##{num++}"
+          message += "\n#{commit_link}: #{commit.message}"
         callback message
 
   # Org level event
