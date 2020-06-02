@@ -104,7 +104,7 @@ module.exports = (robot) ->
           #   what1 : what
           # }
 
-          robot.emit "git_event2", eventType, what
+          # robot.emit "git_event2", eventType, what
 
           robot.emit "git_event3", eventType, eventAction, what
 
