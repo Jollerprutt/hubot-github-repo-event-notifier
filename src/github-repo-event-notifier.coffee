@@ -71,6 +71,9 @@ module.exports = (robot) ->
     adapter = robot.adapterName
 
     try
+      eventAction = "unknown"
+      if data.action
+        eventAction = data.action
 
       filter_parts = eventTypes
         .filter (e) ->
@@ -95,13 +98,15 @@ module.exports = (robot) ->
 
       if filter_parts.length > 0
         announceRepoEvent robot, adapter, data, eventType, (what) ->
-          robot.emit "git_event", {
-            thing : 'thingy',
-            type  : "#{eventType}",
-            what1 : what
-          }
+          # robot.emit "git_event", {
+          #   thing : 'thingy',
+          #   type  : "#{eventType}",
+          #   what1 : what
+          # }
 
           robot.emit "git_event2", eventType, what
+
+          robot.emit "git_event3", eventType, eventAction, what
 
           robot.logger.info ("Received #{eventType} event, containing: #{what}")
       else
