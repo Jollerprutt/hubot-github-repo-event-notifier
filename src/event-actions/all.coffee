@@ -188,6 +188,8 @@ module.exports =
         msg += " assigned to: #{data.assignee.login} by #{pull_by} "
       when "unassigned"
         msg += " unassigned #{data.assignee.login} by #{pull_by} "
+      when "review_requested"
+        msg += " review requested from #{data.pull_request.requested_reviewers.login} by #{pull_by} "
       when "opened"
         msg += " opened by #{pull_by} "
       when "closed"
