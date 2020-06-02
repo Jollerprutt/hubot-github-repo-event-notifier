@@ -126,13 +126,13 @@ module.exports =
     comment = data.comment
     repo = data.repository
     repo_link = formatUrl adapter, repo.html_url, repo.name
-    comment_link = formatUrl adapter, comment.html_url, "#{issue_pull} ##{issue.number}"
 
     issue_pull = "Issue"
 
     if comment.html_url.indexOf("/pull/") > -1
       issue_pull = "Pull Request"
 
+    comment_link = formatUrl adapter, comment.html_url, "#{issue_pull} ##{issue.number}"
     callback "#{repo_link} - New comment on #{comment_link} by #{comment.user.login}: \n\"#{comment.body}\""
 
   member: (adapter, data, callback) ->
